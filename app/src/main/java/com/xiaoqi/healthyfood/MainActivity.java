@@ -108,7 +108,7 @@ public class MainActivity extends AppCompatActivity {
 
 
     @OnClick(R.id.main_fab)
-    void fabOnclick() {
+    public void fabOnclick() {
         //跳转到收藏页面
         startActivity(new Intent(MainActivity.this, CollectActivity.class));
     }
@@ -119,7 +119,7 @@ public class MainActivity extends AppCompatActivity {
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    void onClickEvent(ClickEvent event) {
+    public void onClickEvent(ClickEvent event) {
         Intent intent = new Intent(MainActivity.this, DetailActivity.class);
         intent.putExtra("event", event);
         startActivity(intent);
@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity {
      * @param event
      */
     @Subscribe(threadMode = ThreadMode.MAIN)
-    void onLongClickEvent(LongClickEvent event) {
+    public void onLongClickEvent(LongClickEvent event) {
         AppClient.foods.remove(AppClient.foods.get(event.getPosition()));
         mainAdapter.notifyItemRemoved(event.getPosition());
     }
