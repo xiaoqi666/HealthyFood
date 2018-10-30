@@ -47,6 +47,7 @@ public class DetailActivity extends AppCompatActivity {
     private String[] desc;
     private int position;
     private DyncBroadcastReceiver dyncBroadcastReceiver;
+    private Intent intent;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,7 +61,7 @@ public class DetailActivity extends AppCompatActivity {
         dyncBroadcastReceiver = new DyncBroadcastReceiver();
         IntentFilter intentFilter = new IntentFilter("collection");
         registerReceiver(dyncBroadcastReceiver, intentFilter);
-
+        intent = getIntent();
         initData();
         initAdapter();
     }
@@ -72,8 +73,14 @@ public class DetailActivity extends AppCompatActivity {
         unregisterReceiver(dyncBroadcastReceiver);
     }
 
+    @Override
+    protected void onNewIntent(Intent intent) {
+        super.onNewIntent(intent);
+        this.intent = intent;
+    }
+
     private void initData() {
-        ClickEvent event = getIntent().getParcelableExtra("event");
+        ClickEvent event = intent.getParcelableExtra("event");
         position = event.getPosition();
         food = AppClient.foods.get(position);
         detailTvName.setText(food.getFoodName());

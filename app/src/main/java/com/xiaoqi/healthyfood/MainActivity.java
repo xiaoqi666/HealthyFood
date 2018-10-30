@@ -17,6 +17,7 @@ import android.widget.TextView;
 import com.xiaoqi.healthyfood.bean.ClickEvent;
 import com.xiaoqi.healthyfood.bean.Food;
 import com.xiaoqi.healthyfood.bean.LongClickEvent;
+import com.xiaoqi.healthyfood.broadcast.NewAppWidget;
 import com.xiaoqi.healthyfood.broadcast.StaticBroadcastReceiver;
 
 import org.greenrobot.eventbus.EventBus;
@@ -57,6 +58,24 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onNewIntent(Intent i) {
+        super.onNewIntent(i);
+
+        /**
+         * 发送广播
+         */
+        Intent intent = new Intent(NewAppWidget.APP_START);
+        int position = (int) (Math.random() * AppClient.foods.size());
+        intent.putExtra("event", new ClickEvent("发送静态广播", position));
+        intent.setComponent(new ComponentName(this, StaticBroadcastReceiver.class));
+        sendBroadcast(intent);//发送给通知栏
+        // 偷懒共用一下intent
+        intent.setComponent(new ComponentName(this, NewAppWidget.class));
+        sendBroadcast(intent);//发送给widget
+
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
@@ -66,13 +85,14 @@ public class MainActivity extends AppCompatActivity {
         /**
          * 发送广播
          */
-        Intent intent = new Intent("appstart");
+        Intent intent = new Intent(NewAppWidget.APP_START);
         int position = (int) (Math.random() * AppClient.foods.size());
         intent.putExtra("event", new ClickEvent("发送静态广播", position));
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {//判断版本号是否大于26
-            intent.setComponent(new ComponentName(this, StaticBroadcastReceiver.class));
-        }
-        sendBroadcast(intent);
+        intent.setComponent(new ComponentName(this, StaticBroadcastReceiver.class));
+        sendBroadcast(intent);//发送给通知栏
+        // 偷懒共用一下intent
+        intent.setComponent(new ComponentName(this, NewAppWidget.class));
+        sendBroadcast(intent);//发送给widget
     }
 
 

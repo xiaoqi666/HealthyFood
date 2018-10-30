@@ -22,12 +22,22 @@
             </intent-filter>
         </activity>
         <activity android:name=".DetailActivity" />
-        <activity android:name=".CollectActivity"></activity>
+        <activity android:name=".CollectActivity" />
 
         <receiver android:name=".broadcast.StaticBroadcastReceiver">
             <intent-filter>
-                <action android:name="appstart"></action>
+                <action android:name="appstart" />
             </intent-filter>
+        </receiver>
+        <receiver android:name=".broadcast.NewAppWidget">
+            <intent-filter>
+                <action android:name="appstart" />
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/new_app_widget_info" />
         </receiver>
     </application>
 
